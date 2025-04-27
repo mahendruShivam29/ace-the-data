@@ -10,3 +10,7 @@ This project extracts multi-year ATP match data, loads and transforms it into a 
 - Airflow (Workflow orchestration)
 - Apache Superset (Dashboarding and Visualization)
 - AWS S3 (Cloud storage for raw datasets)
+
+## Acknowledgments
+- The raw tennis match data used in this project comes from the amazing work of [Jeff Sackmann](https://github.com/JeffSackmann), who maintains the [tennis_atp](https://github.com/JeffSackmann/tennis_atp) repository on GitHub.
+- Huge thanks for making high-quality tennis data openly available for analysis and educational purposes.
