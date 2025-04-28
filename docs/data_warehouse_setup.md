@@ -81,6 +81,8 @@ Stores weekly ATP player rankings over time.
 | PLAYER        | NUMBER     | Player’s unique ID |
 | POINTS        | NUMBER     | Ranking points |
 
+---
+
 # Analytics Views (GROUP_PROJECT_ANALYTICS)
 
 ## View: `DASHBOARD_OVERVIEW`
