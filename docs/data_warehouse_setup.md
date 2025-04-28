@@ -81,3 +81,69 @@ Stores weekly ATP player rankings over time.
 | PLAYER        | NUMBER     | Player’s unique ID |
 | POINTS        | NUMBER     | Ranking points |
 
+# Analytics Views (GROUP_PROJECT_ANALYTICS)
+
+## View: `DASHBOARD_OVERVIEW`
+
+**Purpose**:  
+Provides a lightweight, cleaned match-level dataset for quick KPI calculations and chart building.
+
+**Source**:  
+`GROUP_PROJECT_RAW.RAW_MATCHES`
+
+**Columns**:
+| Column Name | Data Type | Description |
+|-------------|-----------|-------------|
+| tourney_id | STRING | Unique Tournament ID |
+| tourney_name | STRING | Tournament Name |
+| surface | STRING | Surface Type (Hard, Clay, Grass, Carpet) |
+| tourney_date | DATE | Tournament Start Date (converted from numeric YYYYMMDD format) |
+| winner_id | NUMBER | Winner's Player ID |
+| loser_id | NUMBER | Loser's Player ID |
+| minutes | NUMBER | Match Duration in Minutes |
+
+**Notes**:
+- Filters out matches where either winner or loser is missing (NULL).
+- Ensures `tourney_date` is properly cast as `DATE` for easy time-based analysis.
+
+---
+
+## View: `UNIQUE_PLAYERS`
+
+**Purpose**:  
+Generates a distinct list of player IDs who appeared either as a winner or loser across all matches.
+
+**Source**:  
+`DASHBOARD_OVERVIEW`
+
+**Columns**:
+| Column Name | Data Type | Description |
+|-------------|-----------|-------------|
+| player_id | NUMBER | Unique Player ID (either as winner or loser) |
+
+**Notes**:
+- Combines winners and losers using UNION to eliminate duplicates.
+- Useful for calculating KPIs like **Total Unique Players**.
+
+---
+
+## View: `MATCHES_OVER_YEAR`
+
+**Purpose**:  
+Aggregates total matches per year, broken down by surface type, to analyze match volume trends.
+
+**Source**:  
+`GROUP_PROJECT_RAW.RAW_MATCHES`
+
+**Columns**:
+| Column Name | Data Type | Description |
+|-------------|-----------|-------------|
+| match_year | NUMBER (4,0) | Year (e.g., 2024) extracted from tournament date |
+| surface | STRING | Surface Type (Hard, Clay, Grass, Carpet) |
+| matches | NUMBER | Number of Matches played that year on that surface |
+
+**Notes**:
+- `tourney_date` is safely converted from numeric to `DATE` type before extracting year.
+- Enables Surface-level filtering and Year-over-Year time-series analysis.
+- Designed to power charts like **Matches Over Time** and **Matches by Surface by Year**.
+
