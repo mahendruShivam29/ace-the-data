@@ -1,0 +1,53 @@
+[2025-05-07T04:28:19.677+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2025-05-07T04:28:19.710+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: BuildELT_dbt.dbt_test manual__2025-05-07T04:27:48.843259+00:00 [queued]>
+[2025-05-07T04:28:19.732+0000] {taskinstance.py:2612} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: BuildELT_dbt.dbt_test manual__2025-05-07T04:27:48.843259+00:00 [queued]>
+[2025-05-07T04:28:19.733+0000] {taskinstance.py:2865} INFO - Starting attempt 1 of 1
+[2025-05-07T04:28:19.761+0000] {taskinstance.py:2888} INFO - Executing <Task(BashOperator): dbt_test> on 2025-05-07 04:27:48.843259+00:00
+[2025-05-07T04:28:19.773+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'BuildELT_dbt', 'dbt_test', 'manual__2025-05-07T04:27:48.843259+00:00', '--job-id', '19', '--raw', '--subdir', 'DAGS_FOLDER/build_elt_with_dbt.py', '--cfg-path', '/tmp/tmpjwgo417k']
+[2025-05-07T04:28:19.777+0000] {standard_task_runner.py:105} INFO - Job 19: Subtask dbt_test
+[2025-05-07T04:28:19.779+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=234) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2025-05-07T04:28:19.780+0000] {standard_task_runner.py:72} INFO - Started process 235 to run task
+[2025-05-07T04:28:19.865+0000] {task_command.py:467} INFO - Running <TaskInstance: BuildELT_dbt.dbt_test manual__2025-05-07T04:27:48.843259+00:00 [running]> on host ca199e5cd8ba
+[2025-05-07T04:28:20.034+0000] {taskinstance.py:3131} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='BuildELT_dbt' AIRFLOW_CTX_TASK_ID='dbt_test' AIRFLOW_CTX_EXECUTION_DATE='2025-05-07T04:27:48.843259+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-05-07T04:27:48.843259+00:00'
+[2025-05-07T04:28:20.037+0000] {taskinstance.py:731} INFO - ::endgroup::
+[2025-05-07T04:28:20.073+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-05-07T04:28:20.075+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', '/home/***/.local/bin/dbt test --profiles-dir /opt/***/final_project_dbt --project-dir /opt/***/final_project_dbt']
+[2025-05-07T04:28:20.085+0000] {subprocess.py:86} INFO - Output:
+[2025-05-07T04:28:23.481+0000] {subprocess.py:93} INFO - [0m04:28:23  Running with dbt=1.9.4
+[2025-05-07T04:28:25.124+0000] {subprocess.py:93} INFO - [0m04:28:25  Registered adapter: snowflake=1.9.4
+[2025-05-07T04:28:25.757+0000] {subprocess.py:93} INFO - [0m04:28:25  Found 9 models, 1 snapshot, 10 data tests, 4 sources, 476 macros
+[2025-05-07T04:28:25.762+0000] {subprocess.py:93} INFO - [0m04:28:25
+[2025-05-07T04:28:25.762+0000] {subprocess.py:93} INFO - [0m04:28:25  Concurrency: 1 threads (target='dev')
+[2025-05-07T04:28:25.763+0000] {subprocess.py:93} INFO - [0m04:28:25
+[2025-05-07T04:28:27.246+0000] {subprocess.py:93} INFO - [0m04:28:27  1 of 10 START test not_null_dashboard_overview_winner_id ....................... [RUN]
+[2025-05-07T04:28:27.591+0000] {subprocess.py:93} INFO - [0m04:28:27  1 of 10 PASS not_null_dashboard_overview_winner_id ............................. [[32mPASS[0m in 0.34s]
+[2025-05-07T04:28:27.595+0000] {subprocess.py:93} INFO - [0m04:28:27  2 of 10 START test not_null_matches_over_years_match_year ...................... [RUN]
+[2025-05-07T04:28:28.600+0000] {subprocess.py:93} INFO - [0m04:28:28  2 of 10 PASS not_null_matches_over_years_match_year ............................ [[32mPASS[0m in 1.00s]
+[2025-05-07T04:28:28.606+0000] {subprocess.py:93} INFO - [0m04:28:28  3 of 10 START test not_null_player_ranking_history_ranking_date ................ [RUN]
+[2025-05-07T04:28:29.000+0000] {subprocess.py:93} INFO - [0m04:28:29  3 of 10 PASS not_null_player_ranking_history_ranking_date ...................... [[32mPASS[0m in 0.39s]
+[2025-05-07T04:28:29.006+0000] {subprocess.py:93} INFO - [0m04:28:29  4 of 10 START test not_null_player_serve_stats_player_id ....................... [RUN]
+[2025-05-07T04:28:29.235+0000] {subprocess.py:93} INFO - [0m04:28:29  4 of 10 PASS not_null_player_serve_stats_player_id ............................. [[32mPASS[0m in 0.23s]
+[2025-05-07T04:28:29.241+0000] {subprocess.py:93} INFO - [0m04:28:29  5 of 10 START test not_null_player_wins_by_surface_player_id ................... [RUN]
+[2025-05-07T04:28:29.425+0000] {subprocess.py:93} INFO - [0m04:28:29  5 of 10 PASS not_null_player_wins_by_surface_player_id ......................... [[32mPASS[0m in 0.18s]
+[2025-05-07T04:28:29.429+0000] {subprocess.py:93} INFO - [0m04:28:29  6 of 10 START test not_null_stg_live_rankings_AGE .............................. [RUN]
+[2025-05-07T04:28:29.624+0000] {subprocess.py:93} INFO - [0m04:28:29  6 of 10 PASS not_null_stg_live_rankings_AGE .................................... [[32mPASS[0m in 0.19s]
+[2025-05-07T04:28:29.629+0000] {subprocess.py:93} INFO - [0m04:28:29  7 of 10 START test not_null_stg_live_rankings_NAME ............................. [RUN]
+[2025-05-07T04:28:29.862+0000] {subprocess.py:93} INFO - [0m04:28:29  7 of 10 PASS not_null_stg_live_rankings_NAME ................................... [[32mPASS[0m in 0.23s]
+[2025-05-07T04:28:29.868+0000] {subprocess.py:93} INFO - [0m04:28:29  8 of 10 START test not_null_stg_live_rankings_POINTS ........................... [RUN]
+[2025-05-07T04:28:30.358+0000] {subprocess.py:93} INFO - [0m04:28:30  8 of 10 PASS not_null_stg_live_rankings_POINTS ................................. [[32mPASS[0m in 0.49s]
+[2025-05-07T04:28:30.363+0000] {subprocess.py:93} INFO - [0m04:28:30  9 of 10 START test not_null_stg_live_rankings_RK ............................... [RUN]
+[2025-05-07T04:28:30.550+0000] {subprocess.py:93} INFO - [0m04:28:30  9 of 10 PASS not_null_stg_live_rankings_RK ..................................... [[32mPASS[0m in 0.19s]
+[2025-05-07T04:28:30.555+0000] {subprocess.py:93} INFO - [0m04:28:30  10 of 10 START test not_null_stg_live_rankings_SCRAPED_AT ...................... [RUN]
+[2025-05-07T04:28:30.681+0000] {subprocess.py:93} INFO - [0m04:28:30  10 of 10 PASS not_null_stg_live_rankings_SCRAPED_AT ............................ [[32mPASS[0m in 0.12s]
+[2025-05-07T04:28:30.796+0000] {subprocess.py:93} INFO - [0m04:28:30
+[2025-05-07T04:28:30.797+0000] {subprocess.py:93} INFO - [0m04:28:30  Finished running 10 data tests in 0 hours 0 minutes and 5.03 seconds (5.03s).
+[2025-05-07T04:28:30.906+0000] {subprocess.py:93} INFO - [0m04:28:30
+[2025-05-07T04:28:30.907+0000] {subprocess.py:93} INFO - [0m04:28:30  [32mCompleted successfully[0m
+[2025-05-07T04:28:30.908+0000] {subprocess.py:93} INFO - [0m04:28:30
+[2025-05-07T04:28:30.909+0000] {subprocess.py:93} INFO - [0m04:28:30  Done. PASS=10 WARN=0 ERROR=0 SKIP=0 TOTAL=10
+[2025-05-07T04:28:31.766+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2025-05-07T04:28:31.802+0000] {taskinstance.py:340} INFO - ::group::Post task execution logs
+[2025-05-07T04:28:31.803+0000] {taskinstance.py:352} INFO - Marking task as SUCCESS. dag_id=BuildELT_dbt, task_id=dbt_test, run_id=manual__2025-05-07T04:27:48.843259+00:00, execution_date=20250507T042748, start_date=20250507T042819, end_date=20250507T042831
+[2025-05-07T04:28:31.862+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2025-05-07T04:28:31.894+0000] {taskinstance.py:3900} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2025-05-07T04:28:31.896+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

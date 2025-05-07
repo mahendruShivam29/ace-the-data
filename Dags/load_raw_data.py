@@ -6,31 +6,31 @@ from airflow.utils.dates import days_ago
 
 # ── Default arguments ─────────────────────────────────────────────────────────
 default_args = {
-    "owner": "airflow",
-    "depends_on_past": False,
-    "retries": 1,
-    "retry_delay": timedelta(minutes=5),
-    "start_date": days_ago(1),
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+    'start_date': days_ago(1),
 }
 
 # ── Define the DAG ─────────────────────────────────────────────────────────────
 dag = DAG(
-    dag_id="load_raw_data",
+    dag_id='load_raw_data',
     default_args=default_args,
-    schedule_interval="@daily",
+    schedule_interval='@daily',
     catchup=False,
-    tags=["tennis", "raw", "s3", "snowflake"],
+    tags=['tennis', 'raw', 's3', 'snowflake'],
 )
 
 # ── Airflow Variables ──────────────────────────────────────────────────────────
-S3_BUCKET = Variable.get("S3_BUCKET")
-AWS_KEY = Variable.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET = Variable.get("AWS_SECRET_ACCESS_KEY")
-SF_CONN = "snowflake_connection_tennis"
+S3_BUCKET = Variable.get('S3_BUCKET')
+AWS_KEY   = Variable.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET= Variable.get('AWS_SECRET_ACCESS_KEY')
+SF_CONN   = 'snowflake_connection_tennis'
 
 # ── SQL to create tables ───────────────────────────────────────────────────────
 # 1) RAW_MATCHES
-sql_create_raw_matches = f"""
+sql_create_raw_matches = f'''
 USE WAREHOUSE compute_wh;
 USE DATABASE tennis_project;
 USE SCHEMA raw;
@@ -93,10 +93,10 @@ CREATE OR REPLACE TABLE RAW_MATCHES (
     loser_rank_points NUMBER
 );
 COMMIT;
-"""
+'''
 
 # 2) RAW_PLAYERS
-sql_create_raw_players = f"""
+sql_create_raw_players = f'''
 USE WAREHOUSE compute_wh;
 USE DATABASE tennis_project;
 USE SCHEMA raw;
@@ -112,10 +112,10 @@ CREATE OR REPLACE TABLE RAW_PLAYERS (
     WIKIDATA_ID VARCHAR(20)
 );
 COMMIT;
-"""
+'''
 
 # 3) RAW_RANKINGS (decades)
-sql_create_raw_rankings = f"""
+sql_create_raw_rankings = f'''
 USE WAREHOUSE compute_wh;
 USE DATABASE tennis_project;
 USE SCHEMA raw;
@@ -127,10 +127,10 @@ CREATE OR REPLACE TABLE RAW_RANKINGS (
     POINTS NUMBER
 );
 COMMIT;
-"""
+'''
 
 # 4) RAW_RANKINGS_CURRENT (snapshot)
-sql_create_raw_rankings_current = f"""
+sql_create_raw_rankings_current = f'''
 USE WAREHOUSE compute_wh;
 USE DATABASE tennis_project;
 USE SCHEMA raw;
@@ -142,10 +142,10 @@ CREATE OR REPLACE TABLE RAW_RANKINGS_CURRENT (
     POINTS NUMBER
 );
 COMMIT;
-"""
+'''
 
 # ── 5) Create Stage for S3 ─────────────────────────────────────────────────────
-sql_create_stage = f"""
+sql_create_stage = f'''
 USE WAREHOUSE compute_wh;
 USE DATABASE tennis_project;
 USE SCHEMA raw;
@@ -158,10 +158,10 @@ CREATE OR REPLACE STAGE RAW_TENNIS_STAGE
   )
   DIRECTORY=(ENABLE = TRUE);
 COMMIT;
-"""
+'''
 
 # ── 6) Create CSV File Format ──────────────────────────────────────────────────
-sql_create_file_format = """
+sql_create_file_format = '''
 USE WAREHOUSE compute_wh;
 USE DATABASE tennis_project;
 USE SCHEMA raw;
@@ -175,12 +175,11 @@ CREATE OR REPLACE FILE FORMAT RAW_CSV_FORMAT
   REPLACE_INVALID_CHARACTERS = TRUE
   ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE;
 COMMIT;
-"""
-
+'''
 
 # ── 7) Helper for COPY INTO ────────────────────────────────────────────────────
 def make_copy_sql(table_name: str, pattern: str) -> str:
-    return f"""
+    return f'''
 USE WAREHOUSE compute_wh;
 USE DATABASE tennis_project;
 USE SCHEMA raw;
@@ -191,77 +190,71 @@ COPY INTO {table_name}
   FILE_FORMAT = (FORMAT_NAME = 'RAW_CSV_FORMAT')
   ON_ERROR = 'CONTINUE';
 COMMIT;
-"""
-
+'''
 
 # ── 8) Define tasks ───────────────────────────────────────────────────────────
 create_raw_matches = SnowflakeOperator(
-    task_id="create_raw_matches_table",
+    task_id='create_raw_matches_table',
     snowflake_conn_id=SF_CONN,
     sql=sql_create_raw_matches,
     dag=dag,
 )
 create_raw_players = SnowflakeOperator(
-    task_id="create_raw_players_table",
+    task_id='create_raw_players_table',
     snowflake_conn_id=SF_CONN,
     sql=sql_create_raw_players,
     dag=dag,
 )
 create_raw_rankings = SnowflakeOperator(
-    task_id="create_raw_rankings_table",
+    task_id='create_raw_rankings_table',
     snowflake_conn_id=SF_CONN,
     sql=sql_create_raw_rankings,
     dag=dag,
 )
 create_raw_rankings_current = SnowflakeOperator(
-    task_id="create_raw_rankings_current_table",
+    task_id='create_raw_rankings_current_table',
     snowflake_conn_id=SF_CONN,
     sql=sql_create_raw_rankings_current,
     dag=dag,
 )
 create_stage = SnowflakeOperator(
-    task_id="create_s3_stage",
+    task_id='create_s3_stage',
     snowflake_conn_id=SF_CONN,
     sql=sql_create_stage,
     dag=dag,
 )
 create_file_format = SnowflakeOperator(
-    task_id="create_csv_file_format",
+    task_id='create_csv_file_format',
     snowflake_conn_id=SF_CONN,
     sql=sql_create_file_format,
     dag=dag,
 )
 load_matches = SnowflakeOperator(
-    task_id="load_raw_matches",
+    task_id='load_raw_matches',
     snowflake_conn_id=SF_CONN,
-    sql=make_copy_sql("RAW_MATCHES", r".*atp_matches_[0-9]{4}[.]csv"),
+    sql=make_copy_sql('RAW_MATCHES', r'.*atp_matches_[0-9]{4}[.]csv'),
     dag=dag,
 )
 load_players = SnowflakeOperator(
-    task_id="load_raw_players",
+    task_id='load_raw_players',
     snowflake_conn_id=SF_CONN,
-    sql=make_copy_sql("RAW_PLAYERS", r".*atp_players[.]csv"),
+    sql=make_copy_sql('RAW_PLAYERS', r'.*atp_players[.]csv'),
     dag=dag,
 )
 load_rankings = SnowflakeOperator(
-    task_id="load_raw_rankings",
+    task_id='load_raw_rankings',
     snowflake_conn_id=SF_CONN,
-    sql=make_copy_sql("RAW_RANKINGS", r".*atp_rankings_[0-9]{2}s[.]csv"),
+    sql=make_copy_sql('RAW_RANKINGS', r'.*atp_rankings_[0-9]{2}s[.]csv'),
     dag=dag,
 )
 load_rankings_current = SnowflakeOperator(
-    task_id="load_raw_rankings_current",
+    task_id='load_raw_rankings_current',
     snowflake_conn_id=SF_CONN,
-    sql=make_copy_sql("RAW_RANKINGS_CURRENT", r".*atp_rankings_current[.]csv"),
+    sql=make_copy_sql('RAW_RANKINGS_CURRENT', r'.*atp_rankings_current[.]csv'),
     dag=dag,
 )
 
 # ── 9) Dependencies ───────────────────────────────────────────────────────────
-[
-    create_raw_matches,
-    create_raw_players,
-    create_raw_rankings,
-    create_raw_rankings_current,
-] >> create_stage
+[create_raw_matches, create_raw_players, create_raw_rankings, create_raw_rankings_current] >> create_stage
 create_stage >> create_file_format
 create_file_format >> [load_matches, load_players, load_rankings, load_rankings_current]

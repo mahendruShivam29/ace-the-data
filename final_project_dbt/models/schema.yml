@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: player_ranking_history
+    description: "History of player rankings joined with player names"
+    columns:
+      - name: ranking_date
+        tests:
+          - not_null
+
+  - name: player_serve_stats
+    description: "Aggregated serving performance of players based on match stats"
+    columns:
+      - name: player_id
+        tests:
+          - not_null
+
+  - name: dashboard_overview
+    description: "Summary table for tournament-level match overview"
+    columns:
+      - name: winner_id
+        tests:
+          - not_null
+
+  - name: matches_over_years
+    description: "Number of matches per year by surface"
+    columns:
+      - name: match_year
+        tests:
+          - not_null
+
+  - name: player_wins_by_surface
+    description: "Count of wins for each player segmented by surface"
+    columns:
+      - name: player_id
+        tests:
+          - not_null
+
+  - name: stg_live_rankings
+    description: "Filtered live rankings with required fields present"
+    columns:
+      - name: RK
+        tests:
+          - not_null
+      - name: NAME
+        tests:
+          - not_null
+      - name: POINTS
+        tests:
+          - not_null
+      - name: AGE
+        tests:
+          - not_null
+      - name: SCRAPED_AT
+        tests:
+          - not_null

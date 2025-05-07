@@ -1,0 +1,69 @@
+version: 2
+
+sources:
+  - name: group_project_raw
+    database: DEV
+    schema: GROUP_PROJECT_RAW
+    tables:
+      - name: raw_matches
+        description: "Matches data containing tournament, players, and match statistics"
+        columns:
+          - name: TOURNEY_ID
+            description: "Unique identifier for the tournament"
+          - name: TOURNEY_NAME
+            description: "Name of the tournament"
+          - name: SURFACE
+            description: "Surface type of the court"
+          - name: MATCH_NUM
+            description: "Unique match number in the tournament"
+          - name: WINNER_ID
+            description: "Player ID of the winner"
+          - name: LOSER_ID
+            description: "Player ID of the loser"
+          - name: SCORE
+            description: "Match score"
+
+      - name: raw_players
+        description: "Player information including personal details and country"
+        columns:
+          - name: PLAYER_ID
+            description: "Unique identifier for the player"
+          - name: NAME_FIRST
+            description: "First name of the player"
+          - name: NAME_LAST
+            description: "Last name of the player"
+          - name: HAND
+            description: "Playing hand of the player (Right, Left, Ambidextrous)"
+          - name: DOB
+            description: "Date of birth"
+          - name: IOC
+            description: "IOC country code"
+          - name: HEIGHT
+            description: "Player's height in centimeters"
+
+      - name: raw_rankings
+        description: "Player rankings at different times"
+        columns:
+          - name: RANKING_DATE
+            description: "Date of the ranking (in YYYYMMDD format)"
+          - name: RANK
+            description: "Player's ranking"
+          - name: PLAYER
+            description: "Player ID"
+          - name: POINTS
+            description: "Points associated with the player's ranking"
+
+      - name: live_rankings
+        description: "Live ATP player rankings as scraped on a given date"
+        columns:
+          - name: RK
+            description: "Player's current live rank"
+          - name: NAME
+            description: "Player's full name"
+          - name: POINTS
+            description: "Ranking points"
+          - name: AGE
+            description: "Player's age"
+          - name: SCRAPED_AT
+            description: "Date when the ranking was scraped"
+

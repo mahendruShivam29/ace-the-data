@@ -1,0 +1,8 @@
+SELECT
+  *
+FROM {{ source('group_project_raw', 'live_rankings') }}
+WHERE RK IS NOT NULL
+  AND NAME IS NOT NULL
+  AND POINTS IS NOT NULL
+  AND AGE IS NOT NULL
+  AND SCRAPED_AT IS NOT NULL
