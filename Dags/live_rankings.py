@@ -22,6 +22,10 @@ def create_rankings_table():
                 SCRAPED_AT DATE
             )
         """)
+        ## Ensure Idempotency.
+        cursor.execute("""
+            DELETE FROM DEV.GROUP_PROJECT_RAW.LIVE_RANKINGS;
+        """)
         conn.commit()
         logging.info("Table LIVE_RANKINGS created or already exists.")
     except Exception as e:
