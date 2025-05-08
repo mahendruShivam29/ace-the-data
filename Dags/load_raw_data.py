@@ -129,21 +129,6 @@ CREATE OR REPLACE TABLE RAW_RANKINGS (
 COMMIT;
 '''
 
-# 4) RAW_RANKINGS_CURRENT (snapshot)
-sql_create_raw_rankings_current = f'''
-USE WAREHOUSE compute_wh;
-USE DATABASE tennis_project;
-USE SCHEMA raw;
-BEGIN;
-CREATE OR REPLACE TABLE RAW_RANKINGS_CURRENT (
-    RANKING_DATE NUMBER,
-    RANK NUMBER,
-    PLAYER NUMBER,
-    POINTS NUMBER
-);
-COMMIT;
-'''
-
 # ── 5) Create Stage for S3 ─────────────────────────────────────────────────────
 sql_create_stage = f'''
 USE WAREHOUSE compute_wh;
@@ -211,12 +196,6 @@ create_raw_rankings = SnowflakeOperator(
     sql=sql_create_raw_rankings,
     dag=dag,
 )
-create_raw_rankings_current = SnowflakeOperator(
-    task_id='create_raw_rankings_current_table',
-    snowflake_conn_id=SF_CONN,
-    sql=sql_create_raw_rankings_current,
-    dag=dag,
-)
 create_stage = SnowflakeOperator(
     task_id='create_s3_stage',
     snowflake_conn_id=SF_CONN,
@@ -247,14 +226,8 @@ load_rankings = SnowflakeOperator(
     sql=make_copy_sql('RAW_RANKINGS', r'.*atp_rankings_[0-9]{2}s[.]csv'),
     dag=dag,
 )
-load_rankings_current = SnowflakeOperator(
-    task_id='load_raw_rankings_current',
-    snowflake_conn_id=SF_CONN,
-    sql=make_copy_sql('RAW_RANKINGS_CURRENT', r'.*atp_rankings_current[.]csv'),
-    dag=dag,
-)
 
 # ── 9) Dependencies ───────────────────────────────────────────────────────────
-[create_raw_matches, create_raw_players, create_raw_rankings, create_raw_rankings_current] >> create_stage
+[create_raw_matches, create_raw_players, create_raw_rankings ] >> create_stage
 create_stage >> create_file_format
-create_file_format >> [load_matches, load_players, load_rankings, load_rankings_current]
+create_file_format >> [load_matches, load_players, load_rankings]
